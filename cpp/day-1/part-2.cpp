@@ -1,0 +1,65 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <map>
+
+std::map<std::string, int> numbers
+{
+    { "zero",  0 },
+    { "one",   1 },
+    { "two",   2 },
+    { "three", 3 },
+    { "four",  4 },
+    { "five",  5 },
+    { "six",   6 },
+    { "seven", 7 },
+    { "eight", 8 },
+    { "nine",  9 },
+};
+
+int main(int argc, char** argv)
+{
+    std::ifstream fs("input.txt");
+
+    int total = 0;
+
+    std::string line;
+    while (std::getline(fs, line))
+    {
+        std::cout << line << std::endl;
+
+        std::string digit_1;
+        std::string digit_2;
+
+        for (auto it = line.begin(); it != line.end(); ++it)
+        {
+            try
+            {
+                int digit = std::stoi(std::string{*it});
+                digit_1 = *it;
+                break;
+            }
+            catch(const std::exception& e){};
+        }
+
+        for (auto it = line.rbegin(); it != line.rend(); ++it)
+        {
+            try
+            {
+                int digit = std::stoi(std::string{*it});
+                digit_2 = *it;
+                break;
+            }
+            catch(const std::exception& e){};
+        }
+
+        int result = std::stoi(std::string{ digit_1 + digit_2 });
+        std::cout << result << std::endl;
+
+        total += result;
+    }
+
+    std::cout << "Answer: " << total << std::endl;
+
+    return 0;
+}

@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <unordered_map>
 
 struct card
 {
@@ -79,13 +78,6 @@ static card process_card(const std::string& line)
     c.entries = get_numbers(entry_nos);
 
     return c;
-}
-
-static int process_winnings(std::map<int, std::vector<card>>& card_map)
-{
-
-
-    return 0;
 }
 
 int main(int argc, char** argv)

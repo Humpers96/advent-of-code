@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
 
 struct card
 {
@@ -27,6 +28,11 @@ struct card
         }
 
         return matches;
+    }
+
+    bool operator<(const card& other) const
+    {
+        return id < other.id;
     }
 };
 
@@ -87,21 +93,35 @@ int main(int argc, char** argv)
     std::fstream fs("input.txt");
     std::string line;
 
-    std::map<int, std::vector<card>> card_map;
+    std::map<card, int> card_map;
 
     while (std::getline(fs, line))
     {
         card c = process_card(line);
 
-        card_map[c.id].push_back(c);
+        card_map[c] = 1;
     }
 
-    for (auto& kvp : card_map)
+    for (auto it = card_map.begin(); it != card_map.end(); ++it)
     {
+        int matches = it->first.matches();
 
+        if (matches != 0)
+        {
+            auto end = std::next(it, matches + 1);
+            for (auto it_2 = std::next(it); it_2 != end; ++it_2)
+            {
+                it_2->second += it->second;
+            }
+        }
     }
 
     int total = 0;
+
+    for (const auto& card : card_map)
+    {
+        total += card.second;
+    }
 
     std::cout << "Answer: " << std::to_string(total);
 
